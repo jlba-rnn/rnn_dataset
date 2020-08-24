@@ -36,7 +36,7 @@ def trajectories(seed, env_name, policy_type, num_traj):
   policy = Policy(env, policy_type)
   
   # collect trajectories
-  data = collect_trajectories(env = env, policy = policy_type, N = num_traj) 
+  data = collect_trajectories(env = env, policy = policy, N = num_traj) 
   data = pd.DataFrame(data, columns = ['episode', 'step', 's', 'a', 's_next', 'rwd', 'done'])
 
   return data
