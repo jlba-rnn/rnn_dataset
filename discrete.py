@@ -3,22 +3,36 @@ import gym
 import pandas as pd
 from sklearn.cluster import KMeans
 
+
 class DiscretizeFeatures():
-  def __init__(self, k=3, per_dim=True):
+  def __init__(self, data, k=30, per_dim=True):
     self.kmeans = [] 
     self.k = k 
     self.per_dim = per_dim
+    self.fitKmeans(data,)
+
+  def c2d(self, feat):
+    feat_shape = feat.shape
+    discrete_feat = self.encode(feat.reshape(-1, feat_shape[-1]))
+    discrete_feat = discrete_feat.reshape(feat_shape)
+    return discrete_feat
+  
+  def d2c(self, feat):
+    feat_shape = feat.shape
+    continuous_feat = self.decode(feat.reshape(-1, feat_shape[-1]))
+    continuous_feat = continuous_feat.reshape(feat_shape)
+    return continuous_feat
 
   def fitKmeans(self, data,):
     if self.per_dim:
-      design_matrix_s = np.vstack(np.array(data['s']))
+      design_matrix_s = np.vstack(np.array(data))
       num_feat = design_matrix_s.shape[1]
       data_idx_s = []
       for i in range(num_feat):
         data_array_s = design_matrix_s[:, i].reshape(-1, 1)
         self.kmeans.append(KMeans(n_clusters=self.k, random_state=0).fit(data_array_s))
     else:
-      design_matrix_s = np.vstack(np.array(data['s']))
+      design_matrix_s = np.vstack(np.array(data))
       self.kmeans.append(KMeans(n_clusters=self.k, random_state=0).fit(design_matrix_s))
 
   def encode(self, feat,):
@@ -44,4 +58,6 @@ class DiscretizeFeatures():
     else:
       feat = np.array(self.kmeans[-1].cluster_centers_[feat_int]).squeeze()
     return feat
+
+
 
