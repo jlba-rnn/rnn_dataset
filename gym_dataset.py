@@ -9,6 +9,7 @@ def make_dataset(seed=1234, env_name='CartPole-v1', policy_type='random',
   if normalize_data:
     data = normalize_traj(data)
   #%% make arrays padded to MAX_LEN for RNN 
+  print("making the dataset...")
   state_train, action_train, state_next_train, rwd_train, len_masks_train = make_array(data, MAX_LEN)
   num_train = num_traj // 4 * 3
   num_test = len(state_train) - num_train
@@ -18,8 +19,8 @@ def make_dataset(seed=1234, env_name='CartPole-v1', policy_type='random',
   state_next_train, state_next_valid = state_next_train[:num_train], state_next_train[num_train:]
   len_masks_train, len_masks_valid = len_masks_train[:num_train], len_masks_train[num_train:]
   
-  train_set = {'state':state_train, 'action':action_train, 'state_next':state_next_train, 'seq_mask':len_mask_train}
-  valid_set = {'state':state_valid, 'action':action_valid, 'state_next':state_next_valid, 'seq_mask':len_mask_valid}
+  train_set = {'state':state_train, 'action':action_train, 'state_next':state_next_train, 'seq_mask':len_masks_train}
+  valid_set = {'state':state_valid, 'action':action_valid, 'state_next':state_next_valid, 'seq_mask':len_masks_valid}
   return train_set, valid_set
 
 
