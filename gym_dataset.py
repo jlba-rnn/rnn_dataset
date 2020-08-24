@@ -48,7 +48,7 @@ def normalize_traj(data):
   state_mean = np.asarray(list(data['s'])).mean(axis=0)
   state_std = np.asarray(list(data['s'])).std(axis=0)
 
-  print(state_mean, state_std)
+  #print(state_mean, state_std)
 
   data['s'] = data['s'].apply(lambda x:(x-state_mean)/state_std)    
   data['s_next'] = data['s_next'].apply(lambda x:(x-state_mean)/state_std)  
